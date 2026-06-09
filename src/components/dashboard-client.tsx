@@ -4,39 +4,47 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { Droplets, TrendingUp, CheckCircle, Store, AlertCircle, Box } from 'lucide-react';
+import { Droplets, TrendingUp, CheckCircle, Store, AlertCircle, Box, Loader2 } from 'lucide-react';
+import { getDashboardData } from '@/lib/data';
 
-interface DashboardClientProps {
-  data: {
-    kpiData: {
-      totalVolume: number;
-      totalTins: number;
-      totalVolumeGrowth: string;
-      fillEfficiency: number;
-      activeOutlets: number;
-      complianceRate: number;
-      missingStoresCount: number;
-      missingStoresList: string[];
-    };
-    volumeTrendData: any[];
-    topPerformers: any[];
-    recentTransactions?: { id: string; date: string; outlet: string; sender: string; warehouse: string; tins: number; volume: number; status: string }[];
-    summary: string;
-  }
-}
-
-export function DashboardClient({ data }: DashboardClientProps) {
+export function DashboardClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { kpiData, volumeTrendData, topPerformers, summary } = data;
   
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const urlStart = searchParams.get('start') || '';
+  const urlEnd = searchParams.get('end') || '';
+  const urlWarehouse = searchParams.get('warehouse') || '';
+
   const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [startDate, setStartDate] = useState(searchParams.get('start') || '');
-  const [endDate, setEndDate] = useState(searchParams.get('end') || '');
-  const [warehouse, setWarehouse] = useState(searchParams.get('warehouse') || '');
+  const [startDate, setStartDate] = useState(urlStart);
+  const [endDate, setEndDate] = useState(urlEnd);
+  const [warehouse, setWarehouse] = useState(urlWarehouse);
   const [showMissingStores, setShowMissingStores] = useState(false);
   const itemsPerPage = 10;
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    getDashboardData(urlStart, urlEnd, urlWarehouse)
+      .then(res => {
+        if (isMounted) {
+          setData(res);
+          setLoading(false);
+        }
+      })
+      .catch(err => {
+        if (isMounted) {
+          setError(err.message);
+          setLoading(false);
+        }
+      });
+    return () => { isMounted = false; };
+  }, [urlStart, urlEnd, urlWarehouse]);
 
   const handleDateFilter = () => {
     const params = new URLSearchParams();
@@ -53,7 +61,32 @@ export function DashboardClient({ data }: DashboardClientProps) {
     router.push('/');
   };
 
-  const filteredTransactions = data.recentTransactions?.filter(tx => 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex flex-col items-center text-slate-500">
+          <Loader2 className="h-8 w-8 animate-spin mb-4" />
+          <p>Loading dashboard data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="bg-red-50 text-red-600 p-4 rounded-lg shadow-sm max-w-md text-center">
+          <AlertCircle className="h-8 w-8 mx-auto mb-2" />
+          <p className="font-medium">Error loading data</p>
+          <p className="text-sm mt-1">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const { kpiData, volumeTrendData, topPerformers, summary } = data;
+
+  const filteredTransactions = data.recentTransactions?.filter((tx: any) => 
     tx.outlet.toLowerCase().includes(filterText.toLowerCase()) || 
     tx.sender.toLowerCase().includes(filterText.toLowerCase())
   ) || [];
@@ -320,7 +353,7 @@ export function DashboardClient({ data }: DashboardClientProps) {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-rose-50">
-                    {kpiData.missingStoresList.map((store, idx) => (
+                    {kpiData.missingStoresList.map((store: string, idx: number) => (
                       <tr key={store} className="hover:bg-rose-50/50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap text-slate-500 font-medium">{idx + 1}</td>
                         <td className="px-6 py-4 font-medium text-slate-900">{store}</td>
@@ -376,7 +409,7 @@ export function DashboardClient({ data }: DashboardClientProps) {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {paginatedTransactions.map((tx, idx) => (
+                    {paginatedTransactions.map((tx: any, idx: number) => (
                       <tr key={`${tx.id}-${idx}`} className="hover:bg-slate-50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap text-slate-600">{tx.date}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-slate-600">
