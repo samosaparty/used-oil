@@ -98,16 +98,16 @@ export function DashboardClient() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8 font-sans">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 md:p-8 font-sans">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-end items-start md:items-end space-y-4 md:space-y-0">
-          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
             {/* Global Filters */}
-            <div className="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-md shadow-sm border">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-2 bg-white p-3 sm:px-3 sm:py-1.5 rounded-md shadow-sm border w-full sm:w-auto">
               <select 
-                className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer"
+                className="text-sm border-none focus:ring-0 text-slate-600 bg-slate-50 sm:bg-transparent rounded px-2 py-1 outline-none cursor-pointer w-full sm:w-auto"
                 value={warehouse}
                 onChange={(e) => {
                   const newWarehouse = e.target.value;
@@ -125,46 +125,51 @@ export function DashboardClient() {
                 <option value="Hyderabad Warehouse">Hyderabad Warehouse</option>
               </select>
 
-              <div className="w-px h-5 bg-slate-200 mx-1"></div>
+              <div className="hidden sm:block w-px h-5 bg-slate-200 mx-1"></div>
 
-              <input 
-                type="date" 
-                className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-              <span className="text-slate-400">to</span>
-              <input 
-                type="date" 
-                className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-              <button 
-                onClick={handleDateFilter}
-                className="ml-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1 rounded text-xs font-medium transition-colors"
-              >
-                Apply
-              </button>
-              <button 
-                onClick={handleResetDateFilter}
-                className="ml-1 text-slate-500 hover:text-slate-700 hover:bg-slate-50 px-3 py-1 rounded text-xs font-medium transition-colors border border-transparent hover:border-slate-200"
-              >
-                Reset
-              </button>
-              
-              <div className="w-px h-5 bg-slate-200 mx-1 hidden sm:block"></div>
-              
-              <button 
-                onClick={() => setShowMissingStores(!showMissingStores)}
-                className={`ml-1 px-3 py-1 rounded text-xs font-medium transition-colors border ${
-                  showMissingStores 
-                    ? 'bg-rose-500 text-white border-rose-500 hover:bg-rose-600' 
-                    : 'text-rose-600 hover:bg-rose-50 border-rose-200 hover:border-rose-300'
-                }`}
-              >
-                {showMissingStores ? 'Hide Missing' : 'Show Missing'}
-              </button>
+              <div className="flex items-center justify-between sm:justify-start gap-2 bg-slate-50 sm:bg-transparent rounded px-2 py-1">
+                <input 
+                  type="date" 
+                  className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer w-full sm:w-auto"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+                <span className="text-slate-400 text-sm">to</span>
+                <input 
+                  type="date" 
+                  className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer w-full sm:w-auto"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </div>
+
+              <div className="flex items-center gap-2 justify-end sm:justify-start mt-1 sm:mt-0">
+                <button 
+                  onClick={handleDateFilter}
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 sm:py-1 rounded text-xs font-medium transition-colors flex-1 sm:flex-none"
+                >
+                  Apply
+                </button>
+                <button 
+                  onClick={handleResetDateFilter}
+                  className="text-slate-500 hover:text-slate-700 hover:bg-slate-50 px-3 py-1.5 sm:py-1 rounded text-xs font-medium transition-colors border border-transparent hover:border-slate-200 flex-1 sm:flex-none"
+                >
+                  Reset
+                </button>
+                
+                <div className="hidden sm:block w-px h-5 bg-slate-200 mx-1"></div>
+                
+                <button 
+                  onClick={() => setShowMissingStores(!showMissingStores)}
+                  className={`px-3 py-1.5 sm:py-1 rounded text-xs font-medium transition-colors border flex-1 sm:flex-none ${
+                    showMissingStores 
+                      ? 'bg-rose-500 text-white border-rose-500 hover:bg-rose-600' 
+                      : 'text-rose-600 hover:bg-rose-50 border-rose-200 hover:border-rose-300'
+                  }`}
+                >
+                  {showMissingStores ? 'Hide Missing' : 'Show Missing'}
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center space-x-2 text-sm text-slate-500 bg-white px-4 py-2 rounded-md shadow-sm border hidden sm:flex">
@@ -188,7 +193,7 @@ export function DashboardClient() {
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Volume Collected</CardTitle>
@@ -381,7 +386,7 @@ export function DashboardClient() {
                 <CardTitle>All Collections</CardTitle>
                 <CardDescription>Full dispatch log from all outlets</CardDescription>
               </div>
-              <div>
+              <div className="w-full sm:w-auto mt-2 sm:mt-0">
                 <input 
                   type="text" 
                   placeholder="Search outlet or sender..." 
@@ -439,11 +444,11 @@ export function DashboardClient() {
 
               {/* Pagination Controls */}
               {totalPages > 1 && (
-                <div className="flex items-center justify-between mt-4 border-t pt-4">
-                  <span className="text-sm text-slate-500">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mt-4 border-t pt-4">
+                  <span className="text-sm text-slate-500 text-center sm:text-left">
                     Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredTransactions.length)} of {filteredTransactions.length} entries
                   </span>
-                  <div className="flex space-x-1">
+                  <div className="flex flex-wrap justify-center gap-1 sm:space-x-1">
                     <button
                       onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                       disabled={currentPage === 1}
