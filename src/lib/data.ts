@@ -75,6 +75,7 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
   // Process Trends and Performers
   const volumeByDate: Record<string, number> = {};
   const volumeBySubDivision: Record<string, { volume: number, tins: number }> = {};
+  const volumeByOutlet: Record<string, { volume: number, tins: number }> = {};
   const validRows: any[] = [];
 
   // Find min and max dates in dataset for the summary if no filters applied
@@ -162,6 +163,13 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
     if (!volumeBySubDivision[subDivision]) volumeBySubDivision[subDivision] = { volume: 0, tins: 0 };
     volumeBySubDivision[subDivision].volume += volume;
     volumeBySubDivision[subDivision].tins += tins;
+
+    // Accumulate Top Outlets (grouped by Outlet Name)
+    if (outletName && outletName !== 'Unknown') {
+      if (!volumeByOutlet[outletName]) volumeByOutlet[outletName] = { volume: 0, tins: 0 };
+      volumeByOutlet[outletName].volume += volume;
+      volumeByOutlet[outletName].tins += tins;
+    }
   });
 
   // Calculate Finals
@@ -207,6 +215,23 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
     .sort((a, b) => b.volume - a.volume)
     .slice(0, 5); // top 5
 
+  const allOutlets = Object.keys(volumeByOutlet)
+    .map(name => ({
+      name,
+      volume: parseFloat(volumeByOutlet[name].volume.toFixed(1)),
+      tins: volumeByOutlet[name].tins,
+    }));
+
+  // Format Top Outlets
+  const topOutlets = [...allOutlets]
+    .sort((a, b) => b.volume - a.volume)
+    .slice(0, 10); // top 10
+
+  // Format Bottom Outlets
+  const bottomOutlets = [...allOutlets]
+    .sort((a, b) => a.volume - b.volume)
+    .slice(0, 10); // bottom 10
+
   // Format All Transactions
   const recentTransactions = validRows.map((row: any) => {
     let subDivision = row['Sender Sub Division'] || 'Other';
@@ -246,6 +271,8 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
     },
     volumeTrendData,
     topPerformers,
+    topOutlets,
+    bottomOutlets,
     recentTransactions,
     summary: `Processed ${validRows.length} submissions. Total volume collected stands at ${parseFloat(totalVolume.toFixed(2))}kg across ${activeOutletsSet.size} outlets. The average fill efficiency is ${parseFloat(fillEfficiency.toFixed(2))} kg/tin.`
   };

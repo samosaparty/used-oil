@@ -25,6 +25,7 @@ export function DashboardClient() {
   const [endDate, setEndDate] = useState(urlEnd);
   const [warehouse, setWarehouse] = useState(urlWarehouse);
   const [showMissingStores, setShowMissingStores] = useState(false);
+  const [showTopOutlets, setShowTopOutlets] = useState(true);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export function DashboardClient() {
     );
   }
 
-  const { kpiData, volumeTrendData, topPerformers, summary } = data;
+  const { kpiData, volumeTrendData, topPerformers, topOutlets, bottomOutlets, summary } = data;
 
   const filteredTransactions = data.recentTransactions?.filter((tx: any) => 
     tx.outlet.toLowerCase().includes(filterText.toLowerCase()) || 
@@ -277,43 +278,14 @@ export function DashboardClient() {
           </Card>
         </div>
 
-        {/* Charts Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle>Volume Trend Analysis</CardTitle>
-              <CardDescription>Daily oil collection volume</CardDescription>
-            </CardHeader>
-            <CardContent className="pl-0">
-              <div className="h-[300px] w-full mt-4 min-w-[0]">
-                <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                  <AreaChart data={volumeTrendData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                    <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: '#64748b' }} dy={10} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b' }} dx={-10} />
-                    <Tooltip 
-                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    />
-                    <Area type="monotone" dataKey="volume" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorVolume)" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Top Performers</CardTitle>
+              <CardTitle>Top Warehouses</CardTitle>
               <CardDescription>Highest volume by Warehouse</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[300px] w-full mt-4 min-w-[0]">
+              <div className="h-[350px] w-full mt-4 min-w-[0]">
                 <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                   <BarChart data={topPerformers} layout="vertical" margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
@@ -321,6 +293,42 @@ export function DashboardClient() {
                     <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 12 }} width={110} />
                     <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}/>
                     <Bar dataKey="volume" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-2 space-y-2 sm:space-y-0">
+              <div>
+                <CardTitle>{showTopOutlets ? 'Top Outlets' : 'Lowest Outlets'}</CardTitle>
+                <CardDescription>{showTopOutlets ? 'Highest volume by Outlet' : 'Lowest volume by Outlet'}</CardDescription>
+              </div>
+              <div className="flex bg-slate-100 p-1 rounded-md">
+                <button 
+                  onClick={() => setShowTopOutlets(true)}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-sm transition-colors ${showTopOutlets ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
+                >
+                  Top 10
+                </button>
+                <button 
+                  onClick={() => setShowTopOutlets(false)}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-sm transition-colors ${!showTopOutlets ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
+                >
+                  Lowest 10
+                </button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[350px] w-full mt-4 min-w-[0]">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+                  <BarChart data={showTopOutlets ? topOutlets : bottomOutlets} layout="vertical" margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
+                    <XAxis type="number" hide />
+                    <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 11 }} width={130} />
+                    <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}/>
+                    <Bar dataKey="volume" fill={showTopOutlets ? "#8b5cf6" : "#f43f5e"} radius={[0, 4, 4, 0]} barSize={20} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
