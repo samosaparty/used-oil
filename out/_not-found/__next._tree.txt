@@ -1,2 +1,2 @@
-:HL["/used-oil/_next/static/chunks/17d9kr8rztpag.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"qMiDV37qs4DStMc0hutu9"}
+:HL["/used-oil/_next/static/chunks/130c08iqq01mn.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"PyIbbPkRZpdkpb_NI8BoO"}

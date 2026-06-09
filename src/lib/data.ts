@@ -4,7 +4,7 @@ const CSV_URL = 'https://docs.google.com/spreadsheets/d/1CXebX3YVLTSZnT04IWFfgog
 
 export const GurgaonWarehouse = [
   'Sohna Road', 'Sushant Lok', 'Sector 56', 'Gurgaon Central Warehouse', 'Kitchen Gurgaon', 
-  'Udyog Vihar Phase V', 'Raheja Square Mall', 'Sector 67', 'Sector 90', 'Sector- 73 Noida', 
+  'Udyog Vihar Phase V', 'Raheja Square Mall', 'Sector 90', 'Sector- 73 Noida', 
   'Sector- 4 Noida', 'Raj Nagar', 'Crossing Republic', 'Indirapuram', 'Sector 10 Gurugram', 
   'Dwarka', 'Ashok Vihar', 'Rohini', 'Malviya Nagar', 'Janak Puri', 'Laxmi Nagar', 
   'Vasant Kunj', 'East Patel Nagar', 'Defence Colony', 'Faridabad SEC16', 'Sector 141', 
@@ -18,7 +18,7 @@ export const GurgaonWarehouse = [
 ];
 
 export const HyderabadWarehouse = [
-  'Hyderabad Central Warehouse', 'Pragathi Nagar Kukatpally', 'Dilshukh Nagar', 
+  'Hyderabad Central Warehouse', 'Pragathi Nagar', 'Dilshukh Nagar', 
   'AS Rao Nagar', 'Manikonda', 'Nacharam', 'Ameerpet', 'Madhapur', 'Kitchen Hyderabad', 
   'Aparna Mall', 'Kondapur', 'Mehdipatnam', 'Hyd - CK - Padmarao Nagar', 
   'HYD - DN - Sun City','Kukatpally', 'Tech HYD'
