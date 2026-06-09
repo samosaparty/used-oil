@@ -111,11 +111,11 @@ export function DashboardClient() {
 
   const renderSortIcon = (key: string) => {
     if (sortConfig?.key !== key) {
-      return <ArrowUpDown className="ml-1.5 h-3.5 w-3.5 text-slate-300 group-hover:text-slate-400 transition-colors" />;
+      return <span className="ml-1.5 text-slate-300 text-xs font-bold group-hover:text-slate-400">↕</span>;
     }
     return sortConfig.direction === 'asc' 
-      ? <ArrowUp className="ml-1.5 h-3.5 w-3.5 text-emerald-600" />
-      : <ArrowDown className="ml-1.5 h-3.5 w-3.5 text-emerald-600" />;
+      ? <span className="ml-1.5 text-emerald-600 text-xs font-bold">▲</span>
+      : <span className="ml-1.5 text-emerald-600 text-xs font-bold">▼</span>;
   };
 
   const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
@@ -209,12 +209,12 @@ export function DashboardClient() {
         </div>
 
         {/* AI Insight Bar */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-4 flex items-start space-x-4 shadow-sm">
-          <div className="p-2 bg-blue-100 rounded-lg text-blue-600 mt-0.5">
-            <TrendingUp size={20} />
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl py-2.5 px-4 flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-3 shadow-sm text-center">
+          <div className="p-1.5 bg-blue-100 rounded-full text-blue-600 flex-shrink-0">
+            <TrendingUp size={18} />
           </div>
-          <div className="flex items-center">
-            <p className="text-blue-800 text-sm font-medium">{summary}</p>
+          <div className="flex items-center justify-center">
+            <p className="text-blue-800 text-[15px] font-medium leading-tight">{summary}</p>
           </div>
         </div>
 
