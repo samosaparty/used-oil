@@ -102,7 +102,7 @@ export function DashboardClient() {
       <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-end items-start md:items-end space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
             {/* Global Filters */}
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-2 bg-white p-3 sm:px-3 sm:py-1.5 rounded-md shadow-sm border w-full sm:w-auto">
@@ -126,19 +126,17 @@ export function DashboardClient() {
                 <option value="Hyderabad Warehouse">Hyderabad Warehouse</option>
               </select>
 
-              <div className="hidden sm:block w-px h-5 bg-slate-200 mx-1"></div>
-
-              <div className="flex items-center justify-between sm:justify-start gap-2 bg-slate-50 sm:bg-transparent rounded px-2 py-1">
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 bg-slate-50 sm:bg-transparent rounded px-2 py-1 w-full sm:w-auto">
                 <input 
                   type="date" 
-                  className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer w-full sm:w-auto"
+                  className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer w-full"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                 />
-                <span className="text-slate-400 text-sm">to</span>
+                <span className="text-slate-400 text-sm text-center">to</span>
                 <input 
                   type="date" 
-                  className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer w-full sm:w-auto"
+                  className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer w-full"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                 />
