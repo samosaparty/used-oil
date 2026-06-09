@@ -121,6 +121,7 @@ export function DashboardClient() {
               >
                 <option value="">All Warehouses</option>
                 <option value="Bangalore Warehouse">Bangalore Warehouse</option>
+                <option value="Chennai Warehouse">Chennai Warehouse</option>
                 <option value="Gurgaon Warehouse">Gurgaon Warehouse</option>
                 <option value="Hyderabad Warehouse">Hyderabad Warehouse</option>
               </select>

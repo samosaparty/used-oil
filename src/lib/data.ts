@@ -2,25 +2,50 @@ import Papa from 'papaparse';
 
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/1CXebX3YVLTSZnT04IWFfgogscWdLNUb0i6sm-XMMVgY/export?format=csv';
 
-const MASTER_STORE_LIST = [
-  "BLR - DN - Airport T-1", "BLR - CK - Panathur", "Udyog Vihar, Phase V", "TN - DN - Guduvancherry", "Marathalli",
-  "Mahadevpura", "Technostar (AECS)", "JP Nagar", "BLR - DN - Haralur", "Sushant Lok", "CBD", "Koramangala", "Kondapur",
-  "Dommasandra", "HSR Layout Sector 3", "Malviya Nagar", "NCR - DN - Sector 120 Market", "NCR - DN - Golf Course Road",
-  "BLR - CK - Manyta Tech Park", "Airport Road", "BLR - DN - Ecoworld", "BLR - DN - Kaggadasapura", "NCR - DN - Star Tower",
-  "Sector 56", "Kalyan Nagar", "New BEL Rd", "Sahakar Nagar", "Jeevan Bhima Nagar", "Sarjapur", "Dasarahalli", "Ameerpet",
-  "Indiranagar 12B", "Sohna Road", "Electronic City", "Manikonda", "NCR - DN - Advant Tech Park", "Bellandur",
-  "Bagmane (CV Raman Nagar)", "BLR - DN - Ayyappa Nagar", "BLR - DN - Budigere", "Kanakapura Dine-In", "Bagmane",
-  "Madhapur", "Begur", "Hennur", "Dwarka", "NCR - DN- Janakpuri", "Indirapuram", "Vasant kunj", "Sector- 4 Noida",
-  "BLR - DN - Bagalur", "Channasandra", "BLR - DN - Royal Meenakshi Mall", "Eco Space", "Sector 4 Gurgaon",
-  "BLR - DN - Galleria Mall", "NCR - DN - Shalimar Bagh", "Bannerghatta", "Sarita Vihar", "Rajaji Nagar",
-  "BLR - DN - Neo Town", "BLR - DN - Kengeri", "Banashankari", "Nagarbhavi", "Pragathi Nagar",
-  "BLR - DN - Park Square Mall (ITPL)", "Nexus Shantiniketan", "Defence Colony", "Old Madras Road", "HYD - DN - Sun City",
-  "Sector 90", "Kukatpally", "Dilshad Garden", "Rohini", "RT Nagar", "East Patel Nagar", "Murgeshpalya", "Varthur",
-  "EGL", "TC Palya", "Hyd - CK - Padmarao Nagar", "HSR Layout", "Whitefield", "AS Rao Nagar", "NCR - DN - Gaur City Mall(Sector 4)",
-  "Alpha 2 Greater Noida", "Kanakpura Road", "Singasandra", "NCR - DN - Pacific Mall(Dwarka 21)", "Faridabad SEC16",
-  "RR Nagar", "Laxmi Nagar", "Aparna Mall", "Dilshukh Nagar", "Uttam Nagar", "Gaur City- Noida Extension",
-  "NCR - CK - Sector 65", "Ananth Nagar", "NCR - CK - Palam Vihar", "Royasandra", "Chandapura", "Raj Nagar",
-  "Crossing Republic", "BLR - DN - Channapatna", "TN - CK - Karapakkam"
+export const GurgaonWarehouse = [
+  'Sohna Road', 'Sushant Lok', 'Sector 56', 'Gurgaon Central Warehouse', 'Kitchen Gurgaon', 
+  'Udyog Vihar Phase V', 'Raheja Square Mall', 'Sector 67', 'Sector 90', 'Sector- 73 Noida', 
+  'Sector- 4 Noida', 'Raj Nagar', 'Crossing Republic', 'Indirapuram', 'Sector 10 Gurugram', 
+  'Dwarka', 'Ashok Vihar', 'Rohini', 'Malviya Nagar', 'Janak Puri', 'Laxmi Nagar', 
+  'Vasant Kunj', 'East Patel Nagar', 'Defence Colony', 'Faridabad SEC16', 'Sector 141', 
+  'Sarita Vihar', 'Corporate Sale NCR', 'Alpha 2 Greater Noida', 'Dilshad Garden', 
+  'Sector 4 Gurgaon', 'Gandhi Vihar', 'Uttam Nagar', 'Gaur City- Noida Extension', 
+  'Training NCR', 'NCR - DN - Advant Tech Park',  'NCR - DN - Sector 120 Market', 'NCR - DN - Sector 120 Central Market', 'Tech NCR', 
+  'NCR - DN- Janakpuri', 'NCR - DN - Star Tower', 'NCR - CK - Palam Vihar', 
+  'NCR - CK - Sector 65', 'NCR - DN - Shalimar Bagh','NCR - DN- Shalimar Bag', 'NCR - DN - Golf Course Road', 
+  'NCR - DN - Pacific Mall(Dwarka 21)','Central Warehouse Gurgaon','Central Kitchen Gurgaon','NCR-DN-Gaur city mall(Sector-4)', 'NCR - DN - Gaur City Mall(Sector 4)',
+  'Training centre NCR', 'Udyog Vihar, Phase V'
+];
+
+export const HyderabadWarehouse = [
+  'Hyderabad Central Warehouse', 'Pragathi Nagar Kukatpally', 'Dilshukh Nagar', 
+  'AS Rao Nagar', 'Manikonda', 'Nacharam', 'Ameerpet', 'Madhapur', 'Kitchen Hyderabad', 
+  'Aparna Mall', 'Kondapur', 'Mehdipatnam', 'Hyd - CK - Padmarao Nagar', 
+  'HYD - DN - Sun City','Kukatpally', 'Tech HYD'
+];
+
+export const CHENNAIWarehouse = [
+  'Chennai Central Warehouse', 'TN - DN - Guduvancherry', 'TN - CK - Karapakkam'
+];
+
+export const BangaloreWarehouse = [
+  'Koramangala', 'Jeevan Bhima Nagar', 'HSR Layout', 'JP Nagar', 'Kalyan Nagar', 
+  'Marathalli', 'Kitchen Bangalore', 'Whitefield', 'CBD', 'Bellandur', 
+  'Sahakar Nagar', 'Bangalore Central Warehouse', 'Rajaji Nagar', 'Electronic City', 
+  'Old Madras Road', 'Dommasandra', 'Nagarbhavi', 'RR Nagar', 'RT Nagar', 
+  'Mahadevpura', 'Dasarahalli', 'Indiranagar 12B', 'Forum Mall', 'Technostar (AECS)', 
+  'Bannerghatta', 'HSR Layout Sector 3', 'Murgeshpalya', 'Training', 'Varthur', 
+  'ETV', 'Corporate Sales BLR', 'Hennur', 'Sarjapur', 'Yelahanka', 'Chandapura', 
+  'Kanakpura Road', 'Begur', 'Royasandra', 'BLR - CK - Manyta Tech Park', 
+  'Bagmane', 'Nexus Koramangala', 'Eco Space', 'Nexus Shantiniketan', 'EGL', 
+  'Bagmane (CV Raman Nagar)', 'Kasavanahalli', 'TC Palya', 'Singasandra', 
+  'New BEL Rd', 'Channasandra', 'Kanakapura Dine-In', 'Airport Road', 
+  'Banashankari', 'Ananth Nagar', 'BLR - CK - Panathur', 
+  'BLR - DN - Park Square Mall (ITPL)', 'BLR - DN - Kengeri', 'BLR - DN - Haralur', 
+  'BLR - DN - Ayyappa Nagar', 'BLR - DN - Budigere', 'BLR - DN - Kaggadasapura', 
+  'Tech BLR', 'BLR - DN - Bagalur', 'BLR - DN - Channapatna', 'BLR - DN - Airport T-1', 
+  'BLR - DN - Ecoworld', 'BLR - DN - Galleria Mall', 'BLR - DN - Neo Town', 
+  'BLR - DN - Royal Meenakshi Mall', 'Lift Maintenance'
 ];
 
 export async function getDashboardData(startDate?: string, endDate?: string, warehouseFilter?: string) {
@@ -103,6 +128,8 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
       subDivision = 'Hyderabad Warehouse';
     } else if (lowerSub === 'bangalore') {
       subDivision = 'Bangalore Warehouse';
+    } else if (lowerSub === 'chennai') {
+      subDivision = 'Chennai Warehouse';
     }
 
     // Apply warehouse filter
@@ -141,8 +168,26 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
   const fillEfficiency = totalTins > 0 ? (totalVolume / totalTins) : 0;
   const complianceRate = totalRowsWithFillStatus > 0 ? (fullyFilledTinsCount / totalRowsWithFillStatus) * 100 : 0;
   
-  // Deduplicate master list and find missing stores
-  const missingStores = [...new Set(MASTER_STORE_LIST)].filter(store => !activeOutletsSet.has(store));
+  // Deduplicate target list and find missing stores
+  let targetStoreList: string[] = [];
+  if (warehouseFilter === 'Gurgaon Warehouse') {
+    targetStoreList = GurgaonWarehouse;
+  } else if (warehouseFilter === 'Hyderabad Warehouse') {
+    targetStoreList = HyderabadWarehouse;
+  } else if (warehouseFilter === 'Bangalore Warehouse') {
+    targetStoreList = BangaloreWarehouse;
+  } else if (warehouseFilter === 'Chennai Warehouse') {
+    targetStoreList = CHENNAIWarehouse;
+  } else {
+    // Combine all if no filter
+    targetStoreList = [
+      ...GurgaonWarehouse,
+      ...HyderabadWarehouse,
+      ...CHENNAIWarehouse,
+      ...BangaloreWarehouse
+    ];
+  }
+  const missingStores = [...new Set(targetStoreList)].filter(store => !activeOutletsSet.has(store));
 
   // Format Trends
   const volumeTrendData = Object.keys(volumeByDate)
