@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { Droplets, TrendingUp, CheckCircle, Store, AlertCircle, Box, Loader2 } from 'lucide-react';
+import { Droplets, TrendingUp, CheckCircle, Store, AlertCircle, Box, Loader2, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { getDashboardData } from '@/lib/data';
 
 export function DashboardClient() {
@@ -26,6 +26,7 @@ export function DashboardClient() {
   const [warehouse, setWarehouse] = useState(urlWarehouse);
   const [showMissingStores, setShowMissingStores] = useState(false);
   const [showTopOutlets, setShowTopOutlets] = useState(true);
+  const [sortConfig, setSortConfig] = useState<{ key: string, direction: 'asc' | 'desc' } | null>(null);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -92,8 +93,33 @@ export function DashboardClient() {
     tx.sender.toLowerCase().includes(filterText.toLowerCase())
   ) || [];
 
-  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
-  const paginatedTransactions = filteredTransactions.slice(
+  const handleSort = (key: string) => {
+    let direction: 'asc' | 'desc' = 'asc';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedTransactions = [...filteredTransactions].sort((a: any, b: any) => {
+    if (!sortConfig) return 0;
+    const { key, direction } = sortConfig;
+    if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
+    if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  const renderSortIcon = (key: string) => {
+    if (sortConfig?.key !== key) {
+      return <ArrowUpDown className="ml-1.5 h-3.5 w-3.5 text-slate-300 group-hover:text-slate-400 transition-colors" />;
+    }
+    return sortConfig.direction === 'asc' 
+      ? <ArrowUp className="ml-1.5 h-3.5 w-3.5 text-emerald-600" />
+      : <ArrowDown className="ml-1.5 h-3.5 w-3.5 text-emerald-600" />;
+  };
+
+  const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
+  const paginatedTransactions = sortedTransactions.slice(
     (currentPage - 1) * itemsPerPage, 
     currentPage * itemsPerPage
   );
@@ -411,13 +437,27 @@ export function DashboardClient() {
                 <table className="w-full text-sm text-left">
                   <thead className="text-xs text-slate-500 uppercase bg-slate-50 border-b">
                     <tr>
-                      <th className="px-6 py-4 font-medium rounded-tl-lg">Date</th>
-                      <th className="px-6 py-4 font-medium">Warehouse</th>
-                      <th className="px-6 py-4 font-medium">Outlet</th>
-                      <th className="px-6 py-4 font-medium">Sender</th>
-                      <th className="px-6 py-4 font-medium text-right">Tins</th>
-                      <th className="px-6 py-4 font-medium text-right whitespace-nowrap">Volume (kg)</th>
-                      <th className="px-6 py-4 font-medium text-center rounded-tr-lg">Status</th>
+                      <th className="px-6 py-4 font-medium rounded-tl-lg cursor-pointer hover:bg-slate-100 transition-colors group" onClick={() => handleSort('date')}>
+                        <div className="flex items-center">Date {renderSortIcon('date')}</div>
+                      </th>
+                      <th className="px-6 py-4 font-medium cursor-pointer hover:bg-slate-100 transition-colors group" onClick={() => handleSort('warehouse')}>
+                        <div className="flex items-center">Warehouse {renderSortIcon('warehouse')}</div>
+                      </th>
+                      <th className="px-6 py-4 font-medium cursor-pointer hover:bg-slate-100 transition-colors group" onClick={() => handleSort('outlet')}>
+                        <div className="flex items-center">Outlet {renderSortIcon('outlet')}</div>
+                      </th>
+                      <th className="px-6 py-4 font-medium cursor-pointer hover:bg-slate-100 transition-colors group" onClick={() => handleSort('sender')}>
+                        <div className="flex items-center">Sender {renderSortIcon('sender')}</div>
+                      </th>
+                      <th className="px-6 py-4 font-medium text-right cursor-pointer hover:bg-slate-100 transition-colors group" onClick={() => handleSort('tins')}>
+                        <div className="flex items-center justify-end">Tins {renderSortIcon('tins')}</div>
+                      </th>
+                      <th className="px-6 py-4 font-medium text-right whitespace-nowrap cursor-pointer hover:bg-slate-100 transition-colors group" onClick={() => handleSort('volume')}>
+                        <div className="flex items-center justify-end">Volume (kg) {renderSortIcon('volume')}</div>
+                      </th>
+                      <th className="px-6 py-4 font-medium text-center rounded-tr-lg cursor-pointer hover:bg-slate-100 transition-colors group" onClick={() => handleSort('status')}>
+                        <div className="flex items-center justify-center">Status {renderSortIcon('status')}</div>
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
