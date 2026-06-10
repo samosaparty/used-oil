@@ -113,24 +113,34 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
     const tins = tinsMatch ? parseInt(tinsMatch[0], 10) : 0;
 
     const outletName = row['Outlets Name'] || 'Unknown';
-    let subDivision = row['Sender Sub Division'] || 'Unknown';
+    const senderDivision = String(row['Sender Division'] || '').trim();
+    let subDivision = String(row['Sender Sub Division'] || 'Unknown').trim();
     
-    // Normalize Gurgaon, NCR, Ghaziabad, Delhi, and Greater Noida into 'Gurgaon Warehouse'
-    const lowerSub = subDivision.toLowerCase();
-    if (
-      lowerSub === 'gurgaon' || 
-      lowerSub === 'ncr' || 
-      lowerSub === 'ghaziabad' || 
-      lowerSub === 'delhi' || 
-      lowerSub === 'greater noida'
-    ) {
+    const lowerDiv = senderDivision.toLowerCase();
+    if (lowerDiv === 'ncr') {
       subDivision = 'Gurgaon Warehouse';
-    } else if (lowerSub === 'hyderabad') {
+    } else if (lowerDiv === 'telangana') {
       subDivision = 'Hyderabad Warehouse';
-    } else if (lowerSub === 'bangalore') {
+    } else if (lowerDiv === 'karnataka') {
       subDivision = 'Bangalore Warehouse';
-    } else if (lowerSub === 'chennai') {
-      subDivision = 'Chennai Warehouse';
+    } else {
+      // Normalize Gurgaon, NCR, Ghaziabad, Delhi, and Greater Noida into 'Gurgaon Warehouse'
+      const lowerSub = subDivision.toLowerCase();
+      if (
+        lowerSub === 'gurgaon' || 
+        lowerSub === 'ncr' || 
+        lowerSub === 'ghaziabad' || 
+        lowerSub === 'delhi' || 
+        lowerSub === 'greater noida'
+      ) {
+        subDivision = 'Gurgaon Warehouse';
+      } else if (lowerSub === 'hyderabad') {
+        subDivision = 'Hyderabad Warehouse';
+      } else if (lowerSub === 'bangalore') {
+        subDivision = 'Bangalore Warehouse';
+      } else if (lowerSub === 'chennai') {
+        subDivision = 'Chennai Warehouse';
+      }
     }
 
     // Apply warehouse filter
@@ -234,16 +244,27 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
 
   // Format All Transactions
   const recentTransactions = validRows.map((row: any) => {
-    let subDivision = row['Sender Sub Division'] || 'Other';
-    const lowerSub = subDivision.toLowerCase();
-    if (lowerSub === 'delhi' || lowerSub === 'greater noida' || lowerSub === 'greaternoida') {
+    const senderDivision = String(row['Sender Division'] || '').trim();
+    let subDivision = String(row['Sender Sub Division'] || 'Other').trim();
+    const lowerDiv = senderDivision.toLowerCase();
+
+    if (lowerDiv === 'ncr') {
       subDivision = 'Gurgaon Warehouse';
-    } else if (lowerSub === 'gurgaon' || lowerSub === 'ncr' || lowerSub === 'gurgaon & ncr' || lowerSub === 'ghaziabad') {
-      subDivision = 'Gurgaon Warehouse';
-    } else if (lowerSub === 'hyderabad') {
+    } else if (lowerDiv === 'telangana') {
       subDivision = 'Hyderabad Warehouse';
-    } else if (lowerSub === 'bangalore') {
+    } else if (lowerDiv === 'karnataka') {
       subDivision = 'Bangalore Warehouse';
+    } else {
+      const lowerSub = subDivision.toLowerCase();
+      if (lowerSub === 'delhi' || lowerSub === 'greater noida' || lowerSub === 'greaternoida') {
+        subDivision = 'Gurgaon Warehouse';
+      } else if (lowerSub === 'gurgaon' || lowerSub === 'ncr' || lowerSub === 'gurgaon & ncr' || lowerSub === 'ghaziabad') {
+        subDivision = 'Gurgaon Warehouse';
+      } else if (lowerSub === 'hyderabad') {
+        subDivision = 'Hyderabad Warehouse';
+      } else if (lowerSub === 'bangalore') {
+        subDivision = 'Bangalore Warehouse';
+      }
     }
 
     return {
