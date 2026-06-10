@@ -185,6 +185,7 @@ export function DashboardClient() {
                   Reset
                 </button>
                 
+                {/* 
                 <div className="hidden sm:block w-px h-5 bg-slate-200 mx-1"></div>
                 
                 <button 
@@ -197,6 +198,7 @@ export function DashboardClient() {
                 >
                   {showMissingStores ? 'Hide Missing' : 'Show Missing'}
                 </button>
+                */}
               </div>
             </div>
 
