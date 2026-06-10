@@ -159,6 +159,7 @@ export function DashboardClient() {
                   className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer w-full"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
+                  onClick={(e) => { try { (e.target as HTMLInputElement).showPicker(); } catch (err) {} }}
                 />
                 <span className="text-slate-400 text-sm text-center">to</span>
                 <input 
@@ -166,6 +167,7 @@ export function DashboardClient() {
                   className="text-sm border-none focus:ring-0 text-slate-600 bg-transparent outline-none cursor-pointer w-full"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
+                  onClick={(e) => { try { (e.target as HTMLInputElement).showPicker(); } catch (err) {} }}
                 />
               </div>
 
