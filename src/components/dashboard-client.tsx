@@ -219,7 +219,7 @@ export function DashboardClient() {
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Volume Collected</CardTitle>
@@ -286,6 +286,7 @@ export function DashboardClient() {
             </CardContent>
           </Card>
 
+          {/* 
           <Card 
             className="cursor-pointer hover:shadow-md hover:ring-2 hover:ring-rose-200 transition-all duration-200"
             onClick={() => setShowMissingStores(!showMissingStores)}
@@ -302,6 +303,7 @@ export function DashboardClient() {
               </p>
             </CardContent>
           </Card>
+          */}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
