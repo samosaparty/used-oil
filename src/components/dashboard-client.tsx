@@ -319,7 +319,7 @@ export function DashboardClient() {
                     <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
                     <XAxis type="number" hide />
                     <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 12 }} width={110} />
-                    <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}/>
+                    <Tooltip formatter={(value: any) => [`${Number(value).toFixed(3)} kg`, 'volume']} cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}/>
                     <Bar dataKey="volume" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -355,7 +355,7 @@ export function DashboardClient() {
                     <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
                     <XAxis type="number" hide />
                     <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 11 }} width={130} />
-                    <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}/>
+                    <Tooltip formatter={(value: any) => [`${Number(value).toFixed(3)} kg`, 'volume']} cursor={{fill: 'transparent'}} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}/>
                     <Bar dataKey="volume" fill={showTopOutlets ? "#8b5cf6" : "#f43f5e"} radius={[0, 4, 4, 0]} barSize={20} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -474,7 +474,7 @@ export function DashboardClient() {
                         <td className="px-6 py-4 font-medium text-slate-900">{tx.outlet}</td>
                         <td className="px-6 py-4 text-slate-600">{tx.sender}</td>
                         <td className="px-6 py-4 text-right text-slate-900">{tx.tins}</td>
-                        <td className="px-6 py-4 text-right font-medium text-slate-900">{tx.volume}</td>
+                        <td className="px-6 py-4 text-right font-medium text-slate-900">{Number(tx.volume).toFixed(3)}</td>
                         <td className="px-6 py-4 text-center">
                           <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
                             {tx.status}

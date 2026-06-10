@@ -212,14 +212,14 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
     .sort() // sort by date ascending
     .map(date => ({
       day: date.substring(5), // roughly MM-DD
-      volume: parseFloat(volumeByDate[date].toFixed(1)),
+      volume: Number(Number(volumeByDate[date]).toFixed(4)),
     }));
 
   // Format Top Performers
   const topPerformers = Object.keys(volumeBySubDivision)
     .map(name => ({
       name,
-      volume: parseFloat(volumeBySubDivision[name].volume.toFixed(1)),
+      volume: Number(Number(volumeBySubDivision[name].volume).toFixed(4)),
       tins: volumeBySubDivision[name].tins,
     }))
     .sort((a, b) => b.volume - a.volume)
@@ -228,7 +228,7 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
   const allOutlets = Object.keys(volumeByOutlet)
     .map(name => ({
       name,
-      volume: parseFloat(volumeByOutlet[name].volume.toFixed(1)),
+      volume: Number(Number(volumeByOutlet[name].volume).toFixed(4)),
       tins: volumeByOutlet[name].tins,
     }));
 
@@ -281,7 +281,7 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
 
   return {
     kpiData: {
-      totalVolume: parseFloat(totalVolume.toFixed(2)),
+      totalVolume: Number(totalVolume.toFixed(4)),
       totalTins: totalTins,
       totalVolumeGrowth: "+12.5%", // We would calculate this if we had a longer history
       fillEfficiency: parseFloat(fillEfficiency.toFixed(2)),
@@ -295,6 +295,6 @@ export async function getDashboardData(startDate?: string, endDate?: string, war
     topOutlets,
     bottomOutlets,
     recentTransactions,
-    summary: `Processed ${validRows.length} submissions. Total volume collected stands at ${parseFloat(totalVolume.toFixed(2))}kg across ${activeOutletsSet.size} outlets. The average fill efficiency is ${parseFloat(fillEfficiency.toFixed(2))} kg/tin.`
+    summary: `Processed ${validRows.length} submissions. Total volume collected stands at ${Number(totalVolume.toFixed(4))}kg across ${activeOutletsSet.size} outlets. The average fill efficiency is ${parseFloat(fillEfficiency.toFixed(2))} kg/tin.`
   };
 }
